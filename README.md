@@ -1,6 +1,6 @@
 # OpengraphTransporter
 
-Export Facebook OpenGraph Translations between Dev Apps
+opengraph_transporter is a Ruby console app that exports Facebook OpenGraph translations between Developer Apps. 
 
 ## Installation
 
@@ -18,7 +18,12 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+1. Run opengraph_transporter
+2. Enter Source Facebook Developer App ID and App Secret
+3. Enter Destination Facebook Developer App ID and App Secret
+4. Enter App translations locale.
+5. Follow the prompts.
+
 
 ## Contributing
 
