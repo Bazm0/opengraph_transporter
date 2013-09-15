@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+##                      $VERBOSE
+## -W0  NO Warnings     nil
+## -W1  Quiet           false
+## -W2  Verbose         true
+BEGIN { $VERBOSE = false }
+
+begin
+  require 'opengraph_transporter'
+rescue LoadError
+  require 'rubygems'
+  require 'opengraph_transporter'
+end
+
+# -----------------------------------------------------------------------
+# Main
+# -----------------------------------------------------------------------
+
+OpengraphTransporter::Base.setup
+say("<%= color('Preparing Translations....', YELLOW, BOLD) %>")   
+OpengraphTransporter::Base.prepare
+OpengraphTransporter::Common.show_translations_info(OpengraphTransporter::Base.translation)
+say("<%= color('Process existing Destination application Translations (#{OpengraphTransporter::Base.translation[:dst_app_name]} native stubs) ....', YELLOW, BOLD) %>")
+OpengraphTransporter::Base.run
+
