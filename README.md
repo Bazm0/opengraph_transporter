@@ -32,7 +32,7 @@ Or install it yourself as:
 
 
 ```
-Please Enter Source Application Id
+$ Please Enter Source Application Id
 ```
 
 
