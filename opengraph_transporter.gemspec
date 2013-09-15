@@ -10,7 +10,8 @@ Gem::Specification.new do |gem|
   gem.email         = ['barryquigley@yahoo.com']
   gem.description   = %q{Open Graph Translations Exporter.}
   gem.summary       = %q{Transporter provides a quick way of exporting Facebook Open Graph Translations between applications.}
-  gem.homepage      = ''
+  gem.homepage      = 'http://github.com/Bazm0/opengraph_transporter'
+
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = ['opengraph_transporter']
