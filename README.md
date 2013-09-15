@@ -1,6 +1,6 @@
 # OpengraphTransporter
 
-TODO: Write a gem description
+Export Facebook OpenGraph Translations between Dev Apps
 
 ## Installation
 
