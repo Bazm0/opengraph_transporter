@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = OpengraphTransporter::VERSION
   gem.authors       = ['Barry Quigley']
   gem.email         = ['barryquigley@yahoo.com']
-  gem.description   = %q{Open Graph Translations Exporter.}
-  gem.summary       = %q{Transporter provides a quick way of exporting Facebook Open Graph Translations between applications.}
+  gem.description   = %q{A Ruby library for exporting Facebook Open Graph Translations between Developer Applications.}
+  gem.summary       = %q{OpenGraph Transporter provides a quick way of exporting Facebook Open Graph Translations between applications.}
   gem.homepage      = 'http://github.com/Bazm0/opengraph_transporter'
 
 
