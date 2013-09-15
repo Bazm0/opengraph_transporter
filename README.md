@@ -21,6 +21,7 @@ Or install it yourself as:
 
 * Ruby 1.9.3 or higher
 * Firefox 22.0.0 or higher
+* Admin Role on Facebook Developer Applications used in translations export process.
 
 ## Usage
 
@@ -32,7 +33,11 @@ Or install it yourself as:
 
 
 ```
-$ Please Enter Source Application Id
+$ Please Enter Destination Application Secret
+  29ae3y7d426106eae639754eb6855ef1
+  
+$ Please Enter App Locale
+  pt_BR
 ```
 
 
