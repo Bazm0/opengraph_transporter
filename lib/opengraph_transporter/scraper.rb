@@ -14,9 +14,7 @@ module OpengraphTransporter
         login_attempt = 1
         login(login_attempt) do |continue|
           if continue
-            puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  login current_url  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
             puts @agent.page.uri.to_s
-            puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
             translations_page_index = 0
             translations_arr = Array.new 
             GracefulQuit.enable
@@ -115,9 +113,7 @@ module OpengraphTransporter
 
       def logout
         say(".....logging out of Facebook \n")
-        puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  logout current_url  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
         puts @agent.page.uri.to_s
-        puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
         form = @agent.page.form_with(:id => 'logout_form')
         @agent.submit(form, form.buttons.first)
       end

@@ -26,7 +26,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'httpclient', ['~> 2.3.3']
   gem.add_dependency 'json', ['~> 1.8.0']
   gem.add_dependency 'addressable', ['~> 2.2.6']
-  gem.add_dependency 'httpclient', ['~> 2.3.3']
   gem.add_dependency 'highline', ['~> 1.6.13']
   gem.add_dependency 'console_splash', ['~> 2.0.1']
 end
