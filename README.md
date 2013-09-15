@@ -15,6 +15,12 @@ And then execute:
 Or install it yourself as:
 
     $ gem install opengraph_transporter
+    
+    
+## Requirements
+
+* Ruby 1.9.3 or higher
+* Firefox 22.0.0 or higher
 
 ## Usage
 
