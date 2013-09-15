@@ -1,5 +1,4 @@
 module OpengraphTransporter 
-  
   class Base
 
     class << self
@@ -7,13 +6,49 @@ module OpengraphTransporter
       @@translation = nil
       @@user = {}
 
+      def run
+        setup
+        say("<%= color('Preparing Translations....', YELLOW, BOLD) %>")   
+        prepare
+        Common.show_translations_info(translation)
+        say("<%= color('Process existing Destination application Translations (#{Base.translation[:dst_app_name]} native stubs) ....', YELLOW, BOLD) %>")
+        run_export
+      end
+
+      def translation
+        @@translation
+      end
+      
+      def translation=(value)
+        @@translation = value
+      end
+
+      def user
+        @@user
+      end
+      
+      def user=(value)
+        @@user = value
+      end
+
+      def inspect
+        "<#{self.name} user: #{user} translation: #{translation.inspect} >"
+      end
+
+      def to_s
+        inspect
+      end
+     
+      private
+
       def setup
+        display_app_splash
         get_apps_details
         self      
       end
 
-      def run
-       translation[:dst_translation_arr] = Scraper.ingest_app_translations(translation[:destination_application_id], translation[:locale])
+      def run_export
+       translation[:dst_translation_arr] = Scraper.ingest_app_translations(translation[:destination_application_id], translation[:app_locale])
        if translation[:dst_translation_arr].length == 0
          say("No destination app <%= color('(#{Base.translation[:dst_app_name]})', RED, BOLD) %> Open Graph Translations found, please check that Open Graph stories exist and localization.")  
        else
@@ -44,32 +79,6 @@ module OpengraphTransporter
         end
       end
 
-      def translation
-        @@translation
-      end
-      
-      def translation=(value)
-        @@translation = value
-      end
-
-      def user
-        @@user
-      end
-      
-      def user=(value)
-        @@user = value
-      end
-
-      def inspect
-        "<#{self.name} user: #{user} translation: #{translation.inspect} >"
-      end
-
-      def to_s
-        inspect
-      end
-     
-      private
-
       def get_apps_details(error_keys = [])
         invalid_entries = false
         initialize_translation
@@ -77,7 +86,13 @@ module OpengraphTransporter
         translation.each do |key, val|
           if val.empty? || error_keys.include?(key.to_s)
             invalid_entries = true
-            translation[key] = ask("Please Enter <%= color('#{capitalize(key)}', GREEN, BOLD) %>", String).strip
+            case key 
+            when :source_application_id then translation[key] = ask_for_app_id(key).to_s
+            when :source_application_secret then translation[key] = ask_for_app_secret(key)
+            when :destination_application_id then translation[key] = ask_for_app_id(key).to_s
+            when :destination_application_secret then translation[key] = ask_for_app_secret(key)
+            else translation[key] = ask("\nPlease Enter <%= color('#{capitalize(key)}', GREEN, BOLD) %>", String)
+            end
           end
         end
 
@@ -102,6 +117,10 @@ module OpengraphTransporter
         if translation[:destination_application_secret].empty?
           error_keys << "destination_application_secret"
         end 
+        if translation[:source_application_id].eql?(translation[:destination_application_id])
+          say("<%= color('Duplicated selection: ', RED, BOLD) %> please selection different source and destination applications. \n")
+          error_keys << "destination_application_id"  << "destination_application_secret"
+        end
         if translation[:app_locale].empty? 
           error_keys << "app_locale"
         else
@@ -113,7 +132,7 @@ module OpengraphTransporter
         if !error_keys.empty?
           say("<%= color('Invalid Data: ', RED, BOLD) %> #{error_keys.join(' ')} \n")
           choose do |menu|
-            menu.prompt = "Re-enter invalid app details?"
+            menu.prompt = "Re-enter app details?"
             menu.choice(:Yes) { 
               get_apps_details(error_keys)
             }
@@ -141,6 +160,7 @@ module OpengraphTransporter
       end
 
       def get_app_specfics
+        say("\n.....retrieving app tokens")
         translation[:source_app_token] = Common.get_app_token(translation[:source_application_id], translation[:source_application_secret]) 
         translation[:destination_app_token] = Common.get_app_token(translation[:destination_application_id], translation[:destination_application_secret]) 
         
@@ -160,6 +180,31 @@ module OpengraphTransporter
 
       def capitalize(sym)
         sym.to_s.split('_').map(&:capitalize).join(' ')
+      end
+
+      def ask_for_app_id(translation_key)
+        ask("\nPlease Enter <%= color('#{capitalize(translation_key)}', GREEN, BOLD) %>", lambda { |id| id.to_s.strip } ) do |q| 
+          q.validate              = lambda { |p|  (p =~ /^\d{15}$/) != nil }
+          q.responses[:not_valid] = "Please enter a 15 digit App Id."
+        end
+      end
+
+      def ask_for_app_secret(translation_key)
+        ask("\nPlease Enter <%= color('#{capitalize(translation_key)}', GREEN, BOLD) %>", lambda { |id| id.to_s.strip } ) do |q| 
+          q.validate              = lambda { |p|  (p =~ /^[a-zA-Z0-9]{32}$/) != nil }
+          q.responses[:not_valid] = "Please enter a 32 character alphanumeric App Secret."
+        end
+      end
+
+      def display_app_splash
+        puts "\n"
+        splash = ConsoleSplash.new(6, 88)
+        splash.write_horizontal_pattern("||")
+        splash.write_vertical_pattern("||")
+        splash.write_center(-4, "Open Graph Translations Exporter")
+        splash.write_center(-3, "Version: #{OpengraphTransporter::VERSION}")
+        splash.splash
+        puts "\n"
       end
 
     end

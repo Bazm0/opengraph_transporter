@@ -1,5 +1,4 @@
 require "singleton"
-
 module OpengraphTransporter
   
   class GracefulQuit

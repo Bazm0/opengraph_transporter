@@ -8,12 +8,11 @@ require 'watir'
 require 'watir-webdriver'
 require 'nokogiri'
 require 'mechanize'
-require 'logger'
+require 'console_splash'
 
 module OpengraphTransporter
   class Error < Exception; end
 end
-
 
 require 'opengraph_transporter/version'
 require 'opengraph_transporter/base'

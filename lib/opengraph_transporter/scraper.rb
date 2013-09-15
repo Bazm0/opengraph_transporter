@@ -1,5 +1,4 @@
 module OpengraphTransporter
-  
   class Scraper
 
     MAX_FB_LOGIN_ATTEMPTS = 3
@@ -7,14 +6,17 @@ module OpengraphTransporter
  
     class << self
   
-      def ingest_app_translations(src_app_id, locale)
+      def ingest_app_translations(app_id, locale)
         @agent = Mechanize.new
         # Defaulting to en_US native locale
-        source_app_uri = "https://www.facebook.com/translations/admin/browse.php?search&sloc=en_US&aloc=#{locale}&app=#{src_app_id}"
+        source_app_uri = "https://www.facebook.com/translations/admin/browse.php?search&sloc=en_US&aloc=#{locale}&app=#{app_id}"
         @agent.get(source_app_uri)
         login_attempt = 1
         login(login_attempt) do |continue|
           if continue
+            puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  login current_url  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+            puts @agent.page.uri.to_s
+            puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
             translations_page_index = 0
             translations_arr = Array.new 
             GracefulQuit.enable
@@ -71,6 +73,7 @@ module OpengraphTransporter
         form.search('*').select{|e| e[:class] =~ /all_variations/}.each_with_index { |item, index|
           native = item.search('*').select{|f| f[:class] =~ /native/}.first.text
           translation = item.search('*').select{|f| f[:class] =~ /s_trans/}.first.text
+          say("#{native} : #{translation}") 
           
           unless native.empty? 
             native_hash = item.attributes['id'].text.sub("variants:","")
@@ -112,12 +115,18 @@ module OpengraphTransporter
 
       def logout
         say(".....logging out of Facebook \n")
+        puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  logout current_url  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+        puts @agent.page.uri.to_s
+        puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
         form = @agent.page.form_with(:id => 'logout_form')
         @agent.submit(form, form.buttons.first)
       end
 
       def get_user_credentials
-        Base.user[:fb_username] = ask("Facebook Username:  ", String) { |q| q.validate = /^.+@.+$/ }
+        Base.user[:fb_username] = ask("Facebook Username:  ", lambda { |u| u.to_s.strip } ) do |q|
+          q.validate              = lambda { |p|  (p =~ /^.+@.+$/) != nil }
+          q.responses[:not_valid] = "Please enter a valid email address."
+        end
         Base.user[:fb_password] = ask("Password:  ") { |q| q.echo = "*" }
       end
 

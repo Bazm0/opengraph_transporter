@@ -1,5 +1,4 @@
 module OpengraphTransporter
-  
   class Browser
 
     MAX_TRANSLATION_PAGE_LIMIT = 30
@@ -7,18 +6,24 @@ module OpengraphTransporter
     class << self
 
       def export
-        Watir.driver = :webdriver
-        @browser = Watir::Browser.new :firefox
-        @page_index_counter = 0
-        @translation_count_index = 0
-        @translation = Base.translation
-        @translation_arr = @translation [:dst_translation_arr].clone
-        fb_login
+        begin 
+          Watir.driver = :webdriver
+          @browser = Watir::Browser.new :firefox
+          @page_index_counter = 0
+          @translation_count_index = 0
+          @translation = Base.translation
+          @translation_arr = @translation [:dst_translation_arr].clone
+          fb_login
 
-        developer_translations_home_uri = "https://www.facebook.com/translations/admin/browse.php?search=&sloc=en_US&aloc=#{@translation[:app_locale]}&app=#{@translation[:destination_application_id]}"
-        @browser.goto developer_translations_home_uri
-        GracefulQuit.enable
-        parse_translation_rows
+          developer_translations_home_uri = "https://www.facebook.com/translations/admin/browse.php?search=&sloc=en_US&aloc=#{@translation[:app_locale]}&app=#{@translation[:destination_application_id]}"
+          @browser.goto developer_translations_home_uri
+          GracefulQuit.enable
+          parse_translation_rows
+
+        rescue Exception => e
+          say("An error occurred when generating automated browser, do you have FireFox installed? \n\n error: #{e}.")
+          exit
+        end
       end
 
       private
@@ -62,7 +67,6 @@ module OpengraphTransporter
       def complete_translations_process
          fb_logout
          open_graph_translations_stats
-         ask("<%= color('Any key to exit....', BOLD) %>", String)
       end
 
       def fb_login

@@ -1,5 +1,4 @@
 module OpengraphTransporter
-  
   class Common
 
     FB_GRAPH_HOST = "https://graph.facebook.com"
@@ -86,9 +85,7 @@ module OpengraphTransporter
         return response['name']
       end
 
-      # Borrowing heavily from Bookface
       def get_app_token(app_id, app_secret)
-        say(".....retrieving app tokens")
         params = {
           :client_id => app_id,
           :client_secret => app_secret,
@@ -97,6 +94,11 @@ module OpengraphTransporter
         path = "/oauth/access_token"
         response = fb_graph_call(path, params, {:format => :text})
         
+        if response.nil?
+          say("<%= color('Invalid Data:', RED, BOLD) %> please recheck source and destination app_id and app_secret.")
+          exit
+        end
+
         dummy = Addressable::URI.new
         dummy.query = response
         access_token = dummy.query_values["access_token"]
@@ -107,7 +109,6 @@ module OpengraphTransporter
 
       private
 
-      # Borrowing heavily from Bookface
       def fb_graph_call(path, params = {}, options = {})
         clnt = HTTPClient.new
         uri = Addressable::URI.parse(FB_GRAPH_HOST)

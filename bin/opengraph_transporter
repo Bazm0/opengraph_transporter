@@ -17,10 +17,5 @@ end
 # Main
 # -----------------------------------------------------------------------
 
-OpengraphTransporter::Base.setup
-say("<%= color('Preparing Translations....', YELLOW, BOLD) %>")   
-OpengraphTransporter::Base.prepare
-OpengraphTransporter::Common.show_translations_info(OpengraphTransporter::Base.translation)
-say("<%= color('Process existing Destination application Translations (#{OpengraphTransporter::Base.translation[:dst_app_name]} native stubs) ....', YELLOW, BOLD) %>")
 OpengraphTransporter::Base.run
 
