@@ -23,7 +23,7 @@ Or install it yourself as:
 * Ruby 1.9.3 or higher
 * Firefox 22.0.0 or higher
 * Admin Role on Facebook Developer Applications used in translations export process.
-* Translation process is dependent on English(US) primary language seletion (this will be configurable in future releases).
+* Translation process is dependent on English(US) primary language selection (this will be configurable in future releases).
 
 ## Usage
 
