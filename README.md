@@ -1,4 +1,5 @@
 # OpengraphTransporter
+[![Gem Version](https://badge.fury.io/rb/opengraph_transporter.png)](http://badge.fury.io/rb/opengraph_transporter)
 
 opengraph_transporter is a Ruby console app that exports Facebook OpenGraph translations between Developer Apps. 
 Alpha version software release. 
