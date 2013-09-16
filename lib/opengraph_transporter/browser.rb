@@ -2,6 +2,7 @@ module OpengraphTransporter
   class Browser
 
     MAX_TRANSLATION_PAGE_LIMIT = 30
+    DEFAULT_PRIMARY_LOCALE = "en_US"
 
     class << self
 
@@ -15,7 +16,11 @@ module OpengraphTransporter
           @translation_arr = @translation [:dst_translation_arr].clone
           fb_login
 
-          developer_translations_home_uri = "https://www.facebook.com/translations/admin/browse.php?search=&sloc=en_US&aloc=#{@translation[:app_locale]}&app=#{@translation[:destination_application_id]}"
+          if @translation[:primary_locale].nil?
+            primary_locale = DEFAULT_PRIMARY_LOCALE
+          end
+
+          developer_translations_home_uri = "https://www.facebook.com/translations/admin/browse.php?search=&sloc=#{primary_locale}&aloc=#{@translation[:app_locale]}&app=#{@translation[:destination_application_id]}"
           @browser.goto developer_translations_home_uri
           GracefulQuit.enable
           parse_translation_rows

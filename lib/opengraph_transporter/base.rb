@@ -48,9 +48,9 @@ module OpengraphTransporter
       end
 
       def run_export
-       translation[:dst_translation_arr] = Scraper.ingest_app_translations(translation[:destination_application_id], translation[:app_locale])
+       translation[:dst_translation_arr] = Scraper.ingest_app_translations(translation[:destination_application_id], translation[:app_locale], translation[:primary_locale])
        if translation[:dst_translation_arr].length == 0
-         say("No destination app <%= color('(#{Base.translation[:dst_app_name]})', RED, BOLD) %> Open Graph Translations found, please check that Open Graph stories exist and localization.")  
+         say("No destination app <%= color('(#{Base.translation[:dst_app_name]})', RED, BOLD) %> Open Graph Translations found, please check that Open Graph stories exist and locales are correct.")  
        else
          translation[:src_translation_arr] = Scraper.update_display_names!(translation[:src_translation_arr], translation[:src_app_name].to_s, translation[:dst_app_name].to_s)
          translations_cleanup
@@ -123,9 +123,14 @@ module OpengraphTransporter
         end
         if translation[:app_locale].empty? 
           error_keys << "app_locale"
+        elsif translation[:primary_locale].empty? 
+          error_keys << "primary_locale"
         else
           if !locales.include?(translation[:app_locale])
             error_keys << "app_locale"
+          end
+          if !locales.include?(translation[:primary_locale])
+            error_keys << "primary_locale"
           end
         end
   
@@ -169,7 +174,7 @@ module OpengraphTransporter
       end
 
       def initialize_translation
-        @@translation ||= {:source_application_id => '', :source_application_secret => '', :destination_application_id => '', :destination_application_secret => '', :app_locale => '' }
+        @@translation ||= {:source_application_id => '', :source_application_secret => '', :destination_application_id => '', :destination_application_secret => '', :primary_locale => '', :app_locale => '' }
       end
 
       def translations_cleanup

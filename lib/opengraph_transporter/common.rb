@@ -69,6 +69,7 @@ module OpengraphTransporter
         say("<%= color('\n***********************************************************************************************************', YELLOW, BOLD) %>")
         say("Source Application ID:      <%= color('#{Base.translation[:source_application_id]}', YELLOW, BOLD) %>     Application Name: <%= color('#{Base.translation[:src_app_name]}', YELLOW, BOLD) %>")
         say("Destination Application ID: <%= color('#{Base.translation[:destination_application_id]}', YELLOW, BOLD) %>     Application Name: <%= color('#{Base.translation[:dst_app_name]}', YELLOW, BOLD) %>")
+        say("Primary Locale:      <%= color('#{Base.translation[:primary_locale]}', YELLOW, BOLD) %>")
         say("Selected Locale:      <%= color('#{Base.translation[:app_locale]}', YELLOW, BOLD) %>")
         say("<%= color('***********************************************************************************************************\n', YELLOW, BOLD) %>")
       end

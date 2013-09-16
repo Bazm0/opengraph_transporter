@@ -3,13 +3,18 @@ module OpengraphTransporter
 
     MAX_FB_LOGIN_ATTEMPTS = 3
     MAX_TRANSLATION_PAGE_LIMIT = 30
+    DEFAULT_PRIMARY_LOCALE = "en_US"
  
     class << self
   
-      def ingest_app_translations(app_id, locale)
+      def ingest_app_translations(app_id, locale, primary_locale)
+        if primary_locale.nil?
+          primary_locale = DEFAULT_PRIMARY_LOCALE
+        end
         @agent = Mechanize.new
         # Defaulting to en_US native locale
-        source_app_uri = "https://www.facebook.com/translations/admin/browse.php?search&sloc=en_US&aloc=#{locale}&app=#{app_id}"
+        source_app_uri = "https://www.facebook.com/translations/admin/browse.php?search&sloc=#{primary_locale}&aloc=#{locale}&app=#{app_id}"
+        
         @agent.get(source_app_uri)
         login_attempt = 1
         login(login_attempt) do |continue|
@@ -119,7 +124,7 @@ module OpengraphTransporter
       end
 
       def get_user_credentials
-        Base.user[:fb_username] = ask("Facebook Username:  ", lambda { |u| u.to_s.strip } ) do |q|
+        Base.user[:fb_username] = ask("Facebook Email:  ", lambda { |u| u.to_s.strip } ) do |q|
           q.validate              = lambda { |p|  (p =~ /^.+@.+$/) != nil }
           q.responses[:not_valid] = "Please enter a valid email address."
         end
