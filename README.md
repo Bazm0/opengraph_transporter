@@ -1,6 +1,7 @@
 # OpengraphTransporter
 
 opengraph_transporter is a Ruby console app that exports Facebook OpenGraph translations between Developer Apps. 
+Alpha version software release. 
 
 ## Installation
 
