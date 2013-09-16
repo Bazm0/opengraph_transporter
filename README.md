@@ -35,7 +35,7 @@ Or install it yourself as:
 
 ```
 $ Please Enter Destination Application Secret
-  29ae3y7d426106eae639754eb6855ef1
+  29ae3b7d426106eae639754eb6855ef1
   
 $ Please Enter App Locale
   pt_BR
