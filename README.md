@@ -27,6 +27,7 @@ Or install it yourself as:
 ### Facebook 
 * Admin Role on Facebook Developer Applications used in translations export process.
 * Translation process is dependent on English(US) primary language selection (this will be configurable in future releases).
+* Consistent Destination App Open Graph story configuration.
 
 ## Usage
 
