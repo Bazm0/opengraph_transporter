@@ -44,7 +44,7 @@ $ Please Enter Source Application Id
   619023458209241
 
 $ Please Enter Source Application Secret
-  2a1c3c1a878e8f52a8b7788dfe89g15f
+  2a1c3c1a878e8f52a8b7788dfe89g15b
 
 $ Please Enter Destination Application Id
   639876543218648
