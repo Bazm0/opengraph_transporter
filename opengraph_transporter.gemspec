@@ -11,6 +11,7 @@ Gem::Specification.new do |gem|
   gem.description   = %q{A Ruby library for exporting Facebook Open Graph Translations between Developer Applications.}
   gem.summary       = %q{OpenGraph Transporter provides a quick way of exporting Facebook Open Graph Translations between applications.}
   gem.homepage      = 'http://github.com/Bazm0/opengraph_transporter'
+  gem.license       = 'MIT'
 
 
   gem.files         = `git ls-files`.split($/)
